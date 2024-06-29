@@ -26,6 +26,7 @@ void main()
         d = 0.005 / d; 
         finalColor += col * d;
     }
+    finalColor = smoothstep(0.01, 0.99, finalColor);
 
-    FragColor = vec4(finalColor,1.0);
+    FragColor = vec4(finalColor, 0.0);
 }

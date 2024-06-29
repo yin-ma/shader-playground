@@ -46,5 +46,7 @@
     <None Include="res\default.vs" />
     <None Include="res\default.fs" />
     <None Include="res\pattern01.fs" />
+    <None Include="res\pattern02.fs" />
+    <None Include="res\smileyface.fs" />
   </ItemGroup>
 </Project>

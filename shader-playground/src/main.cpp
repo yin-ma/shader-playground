@@ -9,8 +9,10 @@
 #include <iostream>
 #include <string>
 
-const int SCR_WIDTH = 600;
-const int SCR_HEIGHT = 600;
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+
+int SCR_WIDTH = 600;
+int SCR_HEIGHT = 600;
 
 float quadVertices[] = {
     // positions   // texCoords
@@ -34,6 +36,10 @@ int main(void)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+    /* opengl config */
+    //glfwWindowHint(GLFW_FLOATING, GL_TRUE);
+    //glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GL_TRUE);
+
     window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Shader Playground", NULL, NULL);
     if (!window)
     {
@@ -43,6 +49,7 @@ int main(void)
     }
 
     glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     //glfwSwapInterval(1);
 
     if (glewInit() != GLEW_OK)
@@ -56,7 +63,7 @@ int main(void)
     /* opengl config */
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
     glClearColor(0.05f, 0.05f, 0.05f, 0.05f);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     /* init camera(position, center, up) */
@@ -68,7 +75,7 @@ int main(void)
     vbo.setLayoutf(0, 2, 4 * sizeof(float), 0);
 
     /* init shaders */
-    Shader shader("./res/default.vs", "./res/pattern01.fs");
+    Shader shader("./res/default.vs", "./res/smileyface.fs");
     shader.bind();
     vao.bind();
 
@@ -76,6 +83,7 @@ int main(void)
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         shader.setUniform1f("u_Time", glfwGetTime());
         glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -87,4 +95,11 @@ int main(void)
     glfwDestroyWindow(window);
     glfwTerminate();
     return 0;
+}
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    SCR_WIDTH = width;
+    SCR_HEIGHT = height;
+    glViewport(0, 0, width, height);
 }
