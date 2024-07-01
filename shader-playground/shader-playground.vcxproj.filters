@@ -49,5 +49,6 @@
     <None Include="res\pattern02.fs" />
     <None Include="res\smileyface.fs" />
     <None Include="res\raindrop.fs" />
+    <None Include="res\universe.fs" />
   </ItemGroup>
 </Project>

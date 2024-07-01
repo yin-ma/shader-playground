@@ -157,6 +157,7 @@
     <None Include="res\pattern02.fs" />
     <None Include="res\raindrop.fs" />
     <None Include="res\smileyface.fs" />
+    <None Include="res\universe.fs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
