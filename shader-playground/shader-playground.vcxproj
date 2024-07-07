@@ -156,7 +156,10 @@
     <None Include="res\pattern01.fs" />
     <None Include="res\pattern02.fs" />
     <None Include="res\raindrop.fs" />
+    <None Include="res\simpleRaymarching.fs" />
     <None Include="res\smileyface.fs" />
+    <None Include="res\starfield01.fs" />
+    <None Include="res\starfield02.fs" />
     <None Include="res\universe.fs" />
     <None Include="res\universe02.fs" />
   </ItemGroup>

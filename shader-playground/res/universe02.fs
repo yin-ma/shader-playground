@@ -89,10 +89,10 @@ void main()
     
     float t = u_Time * 0.05;
     mat2 rot = mat2(cos(t), sin(t), -sin(t), cos(t));
-    for (float i = 0.0; i <= 3.0; i++)
+    for (float i = 0.0; i < 1.0; i+=1.0/4.0)
     {
-        float z = fract(i/3.0+t);
-        float size = mix(10.0, 0.1, z);
+        float z = fract(i+t);
+        float size = mix(5.0, 0.1, z);
         vec4 layer = layer(uv*size*rot + i * 20.0);
         float fade = smoothstep(0.0, 0.5, z) * smoothstep(1.0, 0.9, z);
         col += layer * fade;
