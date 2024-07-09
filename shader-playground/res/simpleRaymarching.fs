@@ -50,6 +50,27 @@ float rayMarch(vec3 ro, vec3 rd)
     return t;
 }
 
+vec3 getNormal(vec3 p)
+{
+    float d = getDist(p);
+    vec2 e = vec2(0.0001, 0.0);
+
+    vec3 n = d - vec3(getDist(p - e.xyy), getDist(p - e.yxy), getDist(p - e.yyx));
+    return normalize(n);
+}
+
+float getLight(vec3 p, vec3 lightPos)
+{
+    vec3 l = normalize(lightPos - p);
+    vec3 n = getNormal(p);
+
+    float diff = clamp(dot(n, l), 0.0, 1.0);
+    float d = rayMarch(p+n*SURF_DIST*2.0, l);
+    // if (d < length(lightPos - p)) diff *= 0.1;
+    diff *= mix(1.0, 0.1, step(d, length(lightPos - p)));
+    return diff;
+}
+
 void main()
 {
     // Normalized pixel coordinates (from 0 to 1)
@@ -60,8 +81,12 @@ void main()
     vec3 rd = normalize(vec3(uv.x, uv.y, 1.0));
     
     float d = rayMarch(ro, rd);
-    
-    col = vec3(d*0.1);
+    vec3 p = ro + rd * d;
+    // col = vec3(d*0.1);
+    vec3 lightPos = vec3(0.0, 5.0, 0.0);
+    lightPos.xz += vec2(sin(u_Time), cos(u_Time)) * 4.0;
+    float diff = getLight(p, lightPos);
+    col = vec3(diff);
 
     // Output to screen
     FragColor = vec4(col,1.0);

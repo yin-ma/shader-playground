@@ -54,5 +54,7 @@
     <None Include="res\simpleRaymarching.fs" />
     <None Include="res\starfield01.fs" />
     <None Include="res\starfield02.fs" />
+    <None Include="res\polar.fs" />
+    <None Include="res\raymarchTemplate.fs" />
   </ItemGroup>
 </Project>

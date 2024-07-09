@@ -155,7 +155,9 @@
     <None Include="res\default.vs" />
     <None Include="res\pattern01.fs" />
     <None Include="res\pattern02.fs" />
+    <None Include="res\polar.fs" />
     <None Include="res\raindrop.fs" />
+    <None Include="res\raymarchTemplate.fs" />
     <None Include="res\simpleRaymarching.fs" />
     <None Include="res\smileyface.fs" />
     <None Include="res\starfield01.fs" />
