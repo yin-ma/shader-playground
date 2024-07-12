@@ -155,6 +155,7 @@
     <None Include="res\default.vs" />
     <None Include="res\pattern01.fs" />
     <None Include="res\pattern02.fs" />
+    <None Include="res\perlinNoise.fs" />
     <None Include="res\polar.fs" />
     <None Include="res\raindrop.fs" />
     <None Include="res\raymarchTemplate.fs" />
@@ -164,6 +165,7 @@
     <None Include="res\starfield02.fs" />
     <None Include="res\universe.fs" />
     <None Include="res\universe02.fs" />
+    <None Include="res\valueNoise.fs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

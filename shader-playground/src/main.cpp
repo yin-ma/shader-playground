@@ -75,7 +75,7 @@ int main(void)
     vbo.setLayoutf(0, 2, 4 * sizeof(float), 0);
 
     /* init shaders */
-    Shader shader("./res/default.vs", "./res/raymarchTemplate.fs");
+    Shader shader("./res/default.vs", "./res/perlinNoise.fs");
     shader.bind();
     vao.bind();
 

@@ -56,5 +56,7 @@
     <None Include="res\starfield02.fs" />
     <None Include="res\polar.fs" />
     <None Include="res\raymarchTemplate.fs" />
+    <None Include="res\valueNoise.fs" />
+    <None Include="res\perlinNoise.fs" />
   </ItemGroup>
 </Project>
