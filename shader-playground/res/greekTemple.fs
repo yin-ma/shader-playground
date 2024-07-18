@@ -7,11 +7,11 @@ out vec4 FragColor;
 uniform float u_Time;
 
 #define MAX_STEPS 100
-#define MAX_DIST 100.
-#define SURF_DIST .001
+#define MAX_DIST 100.0
+#define SURF_DIST 0.001
 #define PI 3.141592
 #define S smoothstep
-#define T u_Time
+#define T iTime
 
 struct Camera
 {
@@ -55,19 +55,42 @@ float sdPlane( vec3 p, vec3 n, float h )
   return dot(p,n) + h;
 }
 
+float sdCappedCylinder( vec3 p, float h, float r )
+{
+  vec2 d = abs(vec2(length(p.xz),p.y)) - vec2(r,h);
+  return min(max(d.x,d.y),0.0) + length(max(d,0.0));
+}
+
+vec2 opRepLim( vec2 p, float s, vec2 lim )
+{
+    return p-s*clamp(round(p/s),-lim,lim);
+}
+
+
 float getDist(vec3 p) 
 {
-    float d = 100.0;
-    float sphere = sdSphere(p, 1.0);
-    float box = sdBox(p + vec3(2.5, 0.5, 0.0), vec3(0.5));
-    float plane = sdPlane(p, vec3(0.0, 1.0, 0.0), 1.0);
+    vec3 q = p;
     
-    d = min(d, sphere);
+    q.xz = opRepLim(q.xz, 4.0, vec2(4.0, 2.0));
+    float d = 100.0;
+    float cylinder = sdCappedCylinder(q, 2.0, 0.5 - 0.1*q.y - 0.1 * (0.5 + 0.5 * sin(12.0*atan(q.z, q.x))));
+    d = min(d, cylinder*0.4);
+    
+    vec3 qq = vec3(q.x, abs(q.y)-2.0, q.z);
+    float box = sdBox(qq, vec3(0.85, 0.1, 0.85));
     d = min(d, box);
-    d = min(d, plane);
+    
+    float bigBox = sdBox(p, vec3(16.0, 2.2, 6.0));
+    d = max(d, -bigBox);
+    
+    vec3 s = p;
+    s.xz = opRepLim(s.xz, 4.1, vec2(4.0, 2.0));
+    float base = sdBox(s - vec3(0.0, -2.3, 0.0), vec3(2.0, 0.2, 2.0));
+    d = min(d, base);
     
     return d;
 }
+
 
 float rayMarch(vec3 ro, vec3 rd) 
 {
@@ -94,23 +117,23 @@ float getLight(vec3 p, vec3 lightPos) {
     vec3 l = normalize(lightPos-p);
     vec3 n = getNormal(p);
     
-    float dif = clamp(dot(n, l), 0.0, 1.0);
-    float amb = 0.25;
+    float dif = clamp(dot(n, l), 0., 1.);
+    float amb = 0.2;
     float d = rayMarch(p+n*SURF_DIST*2., l);
     if(d<length(lightPos-p)) dif *= .1;
+    
     return clamp(dif + amb, 0.0, 1.0);
 }
 
 
 void main()
 {
-    // Normalized pixel coordinates (from -1 to 1)
     vec2 uv = FragCoord;
 
     vec3 col = vec3(0.05);
     
     // camera setup
-    vec3 ro = vec3(0, 3.0, -3.0);
+    vec3 ro = vec3(0, 3.0, -20.0);
     vec3 up = vec3(0.0, 1.0, 0.0);
     vec3 center = vec3(0.0);
     float zoom = 1.0;
@@ -118,7 +141,7 @@ void main()
     Camera camera = Camera(ro, center, up, cross(up, center));
     vec3 rd = getRayDir(uv, camera, zoom);
     vec3 lightPos = vec3(1.0, 5.0, 2.0);
-    lightPos.xz *= rotate(T);
+    lightPos.xz *= rotate(u_Time);
     float d = rayMarch(camera.position, rd);
     
     if(d<MAX_DIST) {

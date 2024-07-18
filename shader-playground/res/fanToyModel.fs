@@ -11,7 +11,7 @@ uniform float u_Time;
 #define SURF_DIST .001
 #define PI 3.141592
 #define S smoothstep
-#define T u_Time
+#define T iTime
 
 struct Camera
 {
@@ -55,19 +55,41 @@ float sdPlane( vec3 p, vec3 n, float h )
   return dot(p,n) + h;
 }
 
+float sdCappedCylinder( vec3 p, float h, float r )
+{
+  vec2 d = abs(vec2(length(p.xz),p.y)) - vec2(r,h);
+  return min(max(d.x,d.y),0.0) + length(max(d,0.0));
+}
+
 float getDist(vec3 p) 
 {
+    vec3 q = p;
+    q.yz *= rotate(-PI*0.5);
     float d = 100.0;
-    float sphere = sdSphere(p, 1.0);
-    float box = sdBox(p + vec3(2.5, 0.5, 0.0), vec3(0.5));
-    float plane = sdPlane(p, vec3(0.0, 1.0, 0.0), 1.0);
     
-    d = min(d, sphere);
-    d = min(d, box);
-    d = min(d, plane);
+    float cover = sdCappedCylinder(q, 2.0, 4.6) - 0.1;
+    float coverNeg = sdCappedCylinder(q, 10.0, 4.5);
+    d = min(d, cover*0.5);
+    d = max(d, -coverNeg);
+    
+    vec3 s = q;
+    s.yz *= rotate(PI/2.0);
+    float grip = sdCappedCylinder(s - vec3(0.0, -8.6, 0.0), 4.0, 2.0);
+    d = min(d, grip);
+    
+    q.xz *= rotate(u_Time*4.0);
+    float cylinder = sdCappedCylinder(q, 0.3, 1.0) - 0.3;
+    d = min(d, cylinder*0.5);
+    float fanBlade = sdBox(q, vec3(4.0, 0.01, 0.7) - q.x*sin(q.z)*0.1) - 0.1;
+    d = min(d, fanBlade);
+    
+    q.xz *= rotate(PI/2.0);
+    fanBlade = sdBox(q, vec3(4.0, 0.01, 0.7) - q.x*sin(q.z)*0.1) - 0.1;
+    d = min(d, fanBlade);
     
     return d;
 }
+
 
 float rayMarch(vec3 ro, vec3 rd) 
 {
@@ -83,7 +105,7 @@ float rayMarch(vec3 ro, vec3 rd)
 }
 
 vec3 getNormal(vec3 p) {
-    vec2 e = vec2(.001, 0);
+    vec2 e = vec2(.0001, 0);
     vec3 n = getDist(p) - 
         vec3(getDist(p-e.xyy), getDist(p-e.yxy), getDist(p-e.yyx));
     
@@ -94,10 +116,11 @@ float getLight(vec3 p, vec3 lightPos) {
     vec3 l = normalize(lightPos-p);
     vec3 n = getNormal(p);
     
-    float dif = clamp(dot(n, l), 0.0, 1.0);
-    float amb = 0.25;
+    float dif = clamp(dot(n, l), 0., 1.);
+    float amb = 0.1;
     float d = rayMarch(p+n*SURF_DIST*2., l);
     if(d<length(lightPos-p)) dif *= .1;
+    
     return clamp(dif + amb, 0.0, 1.0);
 }
 
@@ -110,15 +133,15 @@ void main()
     vec3 col = vec3(0.05);
     
     // camera setup
-    vec3 ro = vec3(0, 3.0, -3.0);
+    vec3 ro = vec3(0, 3.0, -20.0);
+
     vec3 up = vec3(0.0, 1.0, 0.0);
     vec3 center = vec3(0.0);
     float zoom = 1.0;
 
     Camera camera = Camera(ro, center, up, cross(up, center));
     vec3 rd = getRayDir(uv, camera, zoom);
-    vec3 lightPos = vec3(1.0, 5.0, 2.0);
-    lightPos.xz *= rotate(T);
+    vec3 lightPos = vec3(1.0, 5.0, -5.0);
     float d = rayMarch(camera.position, rd);
     
     if(d<MAX_DIST) {

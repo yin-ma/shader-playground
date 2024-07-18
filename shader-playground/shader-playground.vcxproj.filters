@@ -58,5 +58,10 @@
     <None Include="res\raymarchTemplate.fs" />
     <None Include="res\valueNoise.fs" />
     <None Include="res\perlinNoise.fs" />
+    <None Include="res\perlinNoise02.fs" />
+    <None Include="res\perlinNoise03.fs" />
+    <None Include="res\greekTemple.fs" />
+    <None Include="res\fanToyModel.fs" />
+    <None Include="res\walkingonbridge.fs" />
   </ItemGroup>
 </Project>

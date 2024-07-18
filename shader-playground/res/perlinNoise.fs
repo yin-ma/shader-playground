@@ -8,7 +8,6 @@ uniform float u_Time;
 
 vec2 hash22(vec2 p)
 {
-  p = p + 0.02;
   float x = dot(p, vec2(123.4, 234.5));
   float y = dot(p, vec2(234.5, 345.6));
   vec2 gradient = vec2(x, y);
@@ -63,13 +62,10 @@ float perlinNoise(vec2 uv, float octaves)
 
 void main()
 {
-    // Normalized pixel coordinates (from 0 to 1)
     vec2 uv = FragCoord;
     
     vec3 col = vec3(0.0);
-    col += vec3(perlinNoise(uv, 4.0));
-
-
+    col += vec3(perlinNoise(uv, 4.0) * 0.5 + 0.5);
     // Output to screen
     FragColor = vec4(col,1.0);
 }

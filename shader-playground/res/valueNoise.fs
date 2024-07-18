@@ -9,7 +9,7 @@ uniform float u_Time;
 float hash21(vec2 p)
 {
     vec2 temp = fract(p * vec2(123.456, 345.789));
-    temp += dot(temp+1.234, temp+337.456);
+    temp += dot(temp+0.234, temp+337.456);
     return fract(temp.x * temp.y);
 }
 
@@ -49,7 +49,6 @@ float valueNoise(vec2 uv, float octaves)
 
 void main()
 {
-    // Normalized pixel coordinates (from 0 to 1)
     vec2 uv = FragCoord;
     
     vec3 col = vec3(0.0);
