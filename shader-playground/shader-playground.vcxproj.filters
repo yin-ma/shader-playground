@@ -64,5 +64,6 @@
     <None Include="res\fanToyModel.fs" />
     <None Include="res\walkingonbridge.fs" />
     <None Include="res\phongshading.fs" />
+    <None Include="res\terrain.fs" />
   </ItemGroup>
 </Project>
