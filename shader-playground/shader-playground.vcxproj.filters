@@ -65,5 +65,6 @@
     <None Include="res\walkingonbridge.fs" />
     <None Include="res\phongshading.fs" />
     <None Include="res\terrain.fs" />
+    <None Include="res\terrainNoise.fs" />
   </ItemGroup>
 </Project>
