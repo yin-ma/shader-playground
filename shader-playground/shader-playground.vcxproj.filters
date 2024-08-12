@@ -66,5 +66,6 @@
     <None Include="res\phongshading.fs" />
     <None Include="res\terrain.fs" />
     <None Include="res\terrainNoise.fs" />
+    <None Include="res\flame.fs" />
   </ItemGroup>
 </Project>
