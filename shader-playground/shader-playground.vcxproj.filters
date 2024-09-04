@@ -67,5 +67,7 @@
     <None Include="res\terrain.fs" />
     <None Include="res\terrainNoise.fs" />
     <None Include="res\flame.fs" />
+    <None Include="res\checkerTunnel.fs" />
+    <None Include="res\infinitePlate.fs" />
   </ItemGroup>
 </Project>
