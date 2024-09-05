@@ -69,5 +69,6 @@
     <None Include="res\flame.fs" />
     <None Include="res\checkerTunnel.fs" />
     <None Include="res\infinitePlate.fs" />
+    <None Include="res\planet.fs" />
   </ItemGroup>
 </Project>

@@ -163,6 +163,7 @@
     <None Include="res\perlinNoise02.fs" />
     <None Include="res\perlinNoise03.fs" />
     <None Include="res\phongshading.fs" />
+    <None Include="res\planet.fs" />
     <None Include="res\polar.fs" />
     <None Include="res\raindrop.fs" />
     <None Include="res\raymarchTemplate.fs" />
